@@ -35,6 +35,11 @@
 *.i*86
 *.x86_64
 
+# Keil user-specific settings
+*.uvopt
+*.uvoptx
+*.uvgui
+*.uvgui.*
 
 # Debug files
 *.dSYM/
