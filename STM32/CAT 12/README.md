@@ -9,7 +9,7 @@ This CAT covers GPIO output control and user input programming using the STM32F4
 | **Field** | **Description** |
 |---|---|
 | **EXP** | CAT12 |
-| **DATE** | Not specified |
+| **DATE** | 14/10/2026 |
 | **NAME OF EXP** | STM32F401RB Cortex-M4: GPIO and User Input Programming |
 | **HARDWARE SETUP / PLATFORM** | NUCLEO-F401RB development board, STM32F401RB Cortex-M4 microcontroller, onboard LED LD2 (PA5) and USER pushbutton B1 (PC13), STM32CubeMX and Keil MDK-ARM IDE with STM32 HAL. |
 | **TASK NO** | Tasks 1, 2 and 3 |
