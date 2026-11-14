@@ -23,7 +23,7 @@ HTTP Server - STM32–Wemos Wi-Fi Modem Using AT Commands
 TASK11A
 
 ## Circuit Diagram
-See ![Circuit Diagram](TASK11A/Circuit_Diagram_CAT11.png). The same hardware arrangement is used across CAT11 tasks. The Wemos power is separate USB power.
+ The same hardware arrangement is used across CAT11 tasks. The Wemos power is separate USB power.
 
 ## Core Logic / Pseudocode / Code Base
 1. Initialize STM32 HAL, clocks, GPIO and USART1/USART2.
