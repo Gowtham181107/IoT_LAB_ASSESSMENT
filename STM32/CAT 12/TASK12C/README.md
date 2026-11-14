@@ -12,7 +12,7 @@
 
 The onboard USER pushbutton B1 is connected to PC13 and the onboard LED LD2 is connected to PA5. Both components are available directly on the NUCLEO-F401RB board. No external wiring is required.
 
-![CAT12 Circuit Diagram](../CAT12.png)
+![CAT12 Circuit Diagram](./CAT12.png)
 
 ### Core Logic / Pseudocode / Code Base
 
