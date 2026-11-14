@@ -14,7 +14,7 @@
 
 The modem is driven entirely by text commands. A command is typed at the PuTTY prompt, the STM32 forwards it to the Wemos over USART1 with a `\r\n` terminator, and every byte the modem answers is echoed back to the terminal, so what appears on screen is the ESP8266's own reply. Nothing is programmed for this task — the table below is the deliverable, and each row is verified by the output shown next to it.
 
-![Circuit Diagram](circuit_sketch_10b.png)
+![Circuit Diagram](./circuit_sketch_10b.png)
 
 *Figure 1 — Wiring is the same as Task 10A: USART1 (PA9/PA10) carries the AT dialogue, USART2 (PA2/PA3) carries it to PuTTY through the USB–TTL converter. Only the commands change.*
 
