@@ -36,7 +36,7 @@ The filename and original CAT10 headings are not used for repository numbering.
 UART settings: 115200 baud, 8-N-1, no flow control. The Wemos D1 mini is powered separately through its USB connector. Keep a common ground between the boards and USB-to-TTL adapter. Use 3.3 V UART logic.
 
 ## Circuit Diagram
-![CAT11 overall circuit diagram](Circuit_Diagram_CAT11.png)
+![CAT11 overall circuit diagram](./Circuit_Diagram_CAT11.png)
 
 The diagram shows the overall hardware and network arrangement. Browser and Node-RED are HTTP clients over Wi-Fi; they are not wired directly to the STM32. The Wemos is the Wi-Fi/TCP endpoint, while the STM32 communicates with it over USART1. USART2 connects to the USB-to-TTL serial monitor.
 
