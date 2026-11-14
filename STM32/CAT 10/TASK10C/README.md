@@ -20,7 +20,7 @@ Power Supply: Powered via external stable 3.3V supply for ESP8266 and USB/ST-Lin
 Ground: Common ground (GND) shared between STM32, ESP8266, and USB-to-UART adapter.
 
 Circuit Diagram
-![Circuit Diagram]("C:\Users\GOWTHAM V\OneDrive\Documents\IoT ESE LAB TASKS COMPILATION\IoT_LAB_ASSESSMENT\STM32\CAT 10\TASK10C\ESP8266 Wi‑Fi Wiring and IP Diagram.png")
+![Circuit Diagram](./ESP8266 Wi‑Fi Wiring and IP Diagram.png)
 ESP8266 Wi-Fi Wiring and IP Diagram.png is a reference schematic showing the STM32 Blue Pill interfaced with the Wemos ESP8266 and USB-to-UART adapter.
 
 2. Core Logic / Pseudocode / Code Base
