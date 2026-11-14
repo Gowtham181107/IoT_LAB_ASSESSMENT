@@ -12,7 +12,7 @@
 
 The onboard LED LD2 is internally connected to GPIO pin PA5 of the NUCLEO-F401RB board. No external LED or jumper-wire connections are required.
 
-![CAT12](../CAT12.png)
+![CAT12](./CAT12.png)
 
 ### Core Logic / Pseudocode / Code Base
 
