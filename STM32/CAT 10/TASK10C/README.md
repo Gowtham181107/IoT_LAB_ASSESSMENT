@@ -1,114 +1,52 @@
-# CAT10C — Connect Wemos ESP8266 to Wi-Fi and Retrieve IP Address
+EXPERIMENT DETAILS
 
-## EXP
-CAT10C
+EXP: CONTINUOUS ASSESSMENT 10C
+DATE: 05/10/2026
+NAME OF EXP: Connect Wemos ESP8266 to Wi-Fi and Retrieve IP Address
+HARDWARE SETUP / PLATFORM: STM32 Development Board (Blue Pill) + Wemos ESP8266 + USB-to-UART Adapter + STM32CubeMX + Keil MDK (HAL Libraries) + PuTTY
 
-## DATE
-05/10/2026
+TASK 10C: Connect Wemos ESP8266 to Wi-Fi and Retrieve IP Address
 
-## NAME OF EXP
-Connect Wemos ESP8266 to Wi-Fi and Retrieve IP Address
+1. Circuit Diagram
+The experiment establishes dual-UART communication where the STM32 microcontroller interfaces with the Wemos ESP8266 module via USART1 to send AT commands, and forwards all module responses to a PC serial terminal (PuTTY) via USART2 using a USB-to-UART adapter.
 
-*Note: This title is based on the supplied source-code header and implementation. The questions PDF was not included, so confirm the exact experiment title against that document.*
+Development Board: STM32 Development Board (Blue Pill STM32F103C8T6)
+Microcontroller: STM32 (ARM Cortex-M3)
+Wi-Fi Module: Wemos D1 Mini (ESP8266)
+UART Peripherals: 
+  - USART1 (Baud: 115200): Connected to ESP8266 (PA9 TX -> ESP RX, PA10 RX <- ESP TX)
+  - USART2 (Baud: 115200): Connected to PC terminal via USB-to-UART adapter (PA2 TX -> Adapter RX, PA3 RX <- Adapter TX)
+Power Supply: Powered via external stable 3.3V supply for ESP8266 and USB/ST-Link for STM32.
+Ground: Common ground (GND) shared between STM32, ESP8266, and USB-to-UART adapter.
 
-## HARDWARE SETUP / PLATFORM
-- **Microcontroller board:** STM32F103C8T6 (Blue Pill-class MCU; exact board name should be confirmed against the physical setup)
-- **Wi-Fi module:** Wemos ESP8266
-- **Development platform:** STM32CubeMX project configuration and Keil MDK-ARM project
-- **Communication:** UART, 115200 baud, 8 data bits, no parity, 1 stop bit
-- **USART1:** STM32 communicates with the ESP8266.
-- **USART2:** STM32 forwards ESP8266 responses to a PC serial terminal.
+Circuit Diagram
+![Circuit Diagram](ESP8266%20Wi-Fi%20Wiring%20and%20IP%20Diagram.png)
+ESP8266 Wi-Fi Wiring and IP Diagram.png is a reference schematic showing the STM32 Blue Pill interfaced with the Wemos ESP8266 and USB-to-UART adapter.
 
-### UART connections
+2. Core Logic / Pseudocode / Code Base
 
-| STM32 pin | Function | Connects to |
-|---|---|---|
-| PA9 | USART1_TX | ESP8266 RX |
-| PA10 | USART1_RX | ESP8266 TX |
-| PA2 | USART2_TX | USB-to-UART adapter RX / PC terminal |
-| PA3 | USART2_RX | USB-to-UART adapter TX / PC terminal |
-| GND | Common ground | ESP8266 and USB-to-UART adapter GND |
+Working Principle:
+The firmware initializes the STM32 system clocks, GPIOs, USART1, and USART2. It communicates with the Wemos ESP8266 using standard AT command sets over USART1. The initialization sequence transmits "AT" to verify module responsiveness, sets the Wi-Fi mode to Station mode (`AT+CWMODE=1`), connects to the wireless router using SSID and password credentials (`AT+CWJAP`), and requests the assigned network IP address (`AT+CIFSR`). All responses returned from the ESP8266 are transparently echoed and forwarded to the PC terminal via USART2 for monitoring in PuTTY.
 
-Use compatible 3.3 V logic levels. Power the ESP8266 from a supply suitable for its current requirements; do not assume the STM32 board's 3.3 V output can supply the module.
+Pseudocode:
+Initialize the STM32 HAL library and system clock.
+Configure GPIO pins and initialize USART1 (115200 baud) for ESP8266 communication.
+Initialize USART2 (115200 baud) for PC serial terminal forwarding.
+Enter the main execution block:
+  - Transmit "AT" command via USART1 to check ESP8266 readiness.
+  - Receive response from ESP8266 and forward it to PC via USART2.
+  - Transmit "AT+CWMODE=1" to configure Station mode.
+  - Receive response and forward to PC via USART2.
+  - Transmit Wi-Fi join command (`AT+CWJAP="SSID","PASSWORD"`) to associate with the router.
+  - Wait for connection confirmation and forward response to PC via USART2.
+  - Transmit "AT+CIFSR" to query the local IP address.
+  - Capture IP details and forward output to PC via USART2.
+  - Enter a permanent delay loop.
 
-## TASK NO
-CAT10C
+Code Base:
+The program is written in Embedded C utilizing STM32CubeMX for hardware configuration and Keil MDK for compilation.
+`MX_USART1_UART_Init()` and `MX_USART2_UART_Init()` configure the dual serial interfaces.
+`HAL_UART_Transmit()` and `HAL_UART_Receive()` handle string and command data exchange between the MCU, Wi-Fi module, and host terminal.
 
-## Circuit Diagram
-
-The supplied ZIP does not contain a drawn circuit-diagram image. The connection representation below is based on the USART pin assignments in `10_C.ioc` and the UART instances initialized in `Core/Src/main.c`.
-
-```text
-             STM32F103C8T6
-          +-------------------+
-          |                   |
- PA9  ----| USART1_TX          |----> ESP8266 RX
- PA10 <---| USART1_RX          |<---- ESP8266 TX
-          |                   |
- PA2  ----| USART2_TX          |----> USB-to-UART RX ----> PC
- PA3  <---| USART2_RX          |<---- USB-to-UART TX <---- PC
- GND  ----| GND               |------ Common GND
-          +-------------------+
-
-        ESP8266 power: suitable 3.3 V supply
-```
-
-Confirm the ESP8266 board's pin labels and power requirements before wiring.
-
-## Core Logic / Pseudocode / Code Base
-
-### Core logic
-The firmware initializes the HAL, system clock, GPIO, USART1, and USART2. It then communicates with the ESP8266 using AT commands over USART1 and forwards received responses to the PC over USART2.
-
-The sequence implemented in `Core/Src/main.c` is:
-
-1. Send `AT` to test communication with the ESP8266.
-2. Send `AT+CWMODE=1` to select station mode.
-3. Send `AT+CWJAP` with the SSID and password defined in the source to attempt Wi-Fi connection.
-4. Send `AT+CIFSR` to request the IP address.
-5. Forward the received responses through USART2.
-6. Enter a permanent delay loop after the command sequence.
-
-### Pseudocode
-```text
-Initialize HAL
-Configure system clock
-Initialize GPIO
-Initialize USART1 and USART2
-
-Repeat:
-    Send "AT" to ESP8266 through USART1
-    Receive response and forward it through USART2
-
-    Send "AT+CWMODE=1"
-    Receive response and forward it through USART2
-
-    Send Wi-Fi join command
-    Wait for response and forward it through USART2
-
-    Send "AT+CIFSR"
-    Receive response and forward it through USART2
-
-    Stop in an infinite delay loop
-```
-
-### Code base
-- `Core/Src/main.c` — application logic, AT-command transmission, response reception, UART initialization, and system clock configuration.
-- `Core/Inc/` — application header files.
-- `Drivers/` — STM32 HAL and CMSIS dependencies.
-- `10_C.ioc` — STM32CubeMX configuration.
-- `.mxproject` — STM32CubeMX project metadata.
-- `MDK-ARM/10_C.uvprojx` — Keil uVision project.
-
-## INFERENCE
-The experiment demonstrates UART-based communication between an STM32 microcontroller and an ESP8266 Wi-Fi module using AT commands. The firmware attempts to configure the ESP8266 in station mode, connect it to the configured wireless network, and request its IP address. The module's responses are forwarded to a PC serial terminal for observation.
-
-Successful Wi-Fi association and IP-address retrieval depend on correct wiring, suitable power, compatible ESP8266 firmware, and valid Wi-Fi credentials. The supplied source code does not parse or independently validate the returned IP address; it forwards the module's response to the PC terminal.
-
-### Important note before publishing
-The supplied `Core/Src/main.c` contains a hard-coded Wi-Fi SSID and password. Replace them with non-sensitive local values or remove them before publishing the repository publicly. The original source file is retained unchanged in this package.
-
-### Documentation details to confirm
-- Enter the actual experiment date.
-- Confirm the exact `NAME OF EXP` wording against the questions PDF.
-- Add a proper circuit-diagram image if one is required by the lab submission format; the supplied ZIP did not include one.
+3. Inference
+The STM32 microcontroller successfully communicated with the Wemos ESP8266 Wi-Fi module using AT commands over USART1 and relayed output to the PC via USART2. The module correctly interpreted station mode configuration, associated with the wireless access point, and retrieved its dynamic IP address. Proper logic level matching (3.3V) and a dedicated, stable power supply for the ESP8266 were essential for reliable wireless operation and error-free serial logging.
