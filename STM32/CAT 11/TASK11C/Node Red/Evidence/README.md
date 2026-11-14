@@ -11,10 +11,10 @@
 
 Screenshot of the dashboard page showing the current sensor readings from the deployed flow.
 
-![Dashboard live readings](dashboard.jpeg)
+![Dashboard live readings](./dashboard.jpeg)
 
 ## Node flow — deployed Node-RED flow
 
 Screenshot of the Node-RED editor showing the BME280 Dashboard flow as deployed.
 
-![Node-RED BME280 flow](node-flow.png)
+![Node-RED BME280 flow](./node-flow.png)
