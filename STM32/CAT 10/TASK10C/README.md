@@ -4,7 +4,7 @@
 CAT10C
 
 ## DATE
-Not specified in the supplied project files. Enter the date of the experiment performed.
+05/10/2026
 
 ## NAME OF EXP
 Connect Wemos ESP8266 to Wi-Fi and Retrieve IP Address
